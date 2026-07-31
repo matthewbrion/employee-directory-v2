@@ -1,5 +1,5 @@
 import express from "express";
-import { getEmployee, getEmployees, getRandomEmployee } from '#db/employees'
+import { getEmployee, getEmployees, getRandomEmployee, createEmployee } from '#db/employees'
 
 const router = express.Router();
 
@@ -22,6 +22,13 @@ router.get("/:id", (req, res) => {
     }
 
     res.send(employee);
+});
+
+router.post('/', (req, res) => {
+    if (!req.body) {return res.status(400).send('No body found in request.')}
+    if (!req.body.name) {return res.status(400).send('Employee name not found in request body.')}
+    const newEmployee = createEmployee(req.body.name);
+    return res.status(201).send(newEmployee)
 });
 
 export default router;
